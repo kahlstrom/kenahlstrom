@@ -20,10 +20,10 @@ const Header = () => (
       <Grid item xs={1}>
         <img src="favicon-32x32.png" />
       </Grid>
-      <Grid item xs={3}>
+      <Grid item xs={8}>
         <Typography>Ken Ahlstrom's Professional Profile</Typography>
       </Grid>
-      <Grid item xs={6} />
+      <Grid item xs={1} />
       <Grid item xs={2}>
         <Typography>v 0.01.00</Typography>
       </Grid>
