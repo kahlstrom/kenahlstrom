@@ -135,9 +135,9 @@ const Experience = () => (
           <CardHeader
             title="Links"
           />
-          <StyledLink href="#"><BookIcon /> &nbsp;The Coder's Guide to JavaScript</StyledLink>
-          <StyledLink href="#"><GitHubIcon /> &nbsp;GitHub</StyledLink>
-          <StyledLink href="#"><InstagramIcon /> &nbsp;@thesecondwatch</StyledLink>
+          <StyledLink href="https://medium.com/the-coders-guide-to-javascript"><BookIcon /> &nbsp;The Coder's Guide to JavaScript</StyledLink>
+          <StyledLink href="https://github.com/kahlstrom"><GitHubIcon /> &nbsp;GitHub</StyledLink>
+          <StyledLink href="https://www.instagram.com/thesecondwatch/"><InstagramIcon /> &nbsp;@thesecondwatch</StyledLink>
         </StyledCard>
       </Grid>
     </Grid>
