@@ -40,7 +40,7 @@ const nfSamples = [
   {name: 'EFQM Corporate Site', link: 'https://efqm.org'},
   {name: 'EFQM AssessBase', link: 'https://assessbase.digitalefqm.com/'},
   {name: 'Orion Accelerator', link: 'https://www.nearform.com/services/accelerators/'},
-  {name: 'CrossBorder Solutions', link: 'https://crossborder.solutions/'}
+  {name: 'CrossBorder Solutions', link: 'https://www.crossborder.ai/'}
 ]
 
 const ddmExperience = [
