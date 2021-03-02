@@ -25,7 +25,7 @@ const Expertise = () => {
   <StyledPaper>
     <Typography variant="h1" style={{ fontSize: '32px', padding: '16px' }}>Skills</Typography>
     <Grid container>
-      <Grid item xs={4}>
+      <Grid item xs={12} md={4}>
         <StyledCard>
           <CardHeader
             title="Current"
@@ -97,7 +97,7 @@ const Expertise = () => {
             />
         </StyledCard>
       </Grid>
-      <Grid item xs={4}>
+      <Grid item item xs={12} md={4}>
         <StyledCard>
           <CardHeader
             title="Previous"
@@ -129,7 +129,7 @@ const Expertise = () => {
           />
         </StyledCard>
       </Grid>
-      <Grid item xs={4}>
+      <Grid item xs={12} md={4}>
         <StyledCard>
           <CardHeader
             title="Additional"
