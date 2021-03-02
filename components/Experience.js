@@ -1,5 +1,8 @@
 import React from 'react'
-import { Grid, Paper, Typography, withStyles } from '@material-ui/core'
+import { Card, CardHeader, Grid, Link, Paper, Typography, withStyles } from '@material-ui/core'
+import BookIcon from '@material-ui/icons/Book';
+import GitHubIcon from '@material-ui/icons/GitHub';
+import InstagramIcon from '@material-ui/icons/Instagram';
 
 import ExperienceItem from './ExperienceItem'
 
@@ -9,6 +12,20 @@ const StyledPaper = withStyles(() => ({
     boxShadow: 'none'
   }
 }))(Paper);
+
+const StyledCard = withStyles(() => ({
+  root: {
+    margin: '8px 24px',
+    backgroundColor: '#ffffff'
+  }
+}))(Card);
+
+const StyledLink = withStyles(() => ({
+  root: {
+    display: 'block',
+    margin: '16px',
+  }
+}))(Link);
 
 const nfExperience = [
   'Architect and build web applications for clients',
@@ -72,45 +89,57 @@ const siKeyContrib = `Acted as sole technologist of the company, corporate pilot
 
 const Experience = () => (
   <StyledPaper>
-    <Grid item xs={12}>
-      <Typography variant="h1" style={{ fontSize: '32px', padding: '16px' }}>Experience</Typography>
-      <ExperienceItem
-        title="Delivery Architect"
-        subheader="Nearform (Contractor)"
-        dates="August 2019 - Current"
-        content={nfExperience}
-        keyContrib={nfKeyContrib}
-        samples={nfSamples}
-      />
-      <ExperienceItem
-        title="Director of Engineering and Product Management"
-        subheader="Deseret Digital Media"
-        dates="October 2010 - April 2019"
-        content={ddmExperience}
-        keyContrib={ddmKeyContrib}
-        samples={ddmSamples}
-      />
-      <ExperienceItem
-        title="Product Manager / Web Developer"
-        subheader="Niki Media Group"
-        dates="October 2007 - February 2008"
-        content={nmgExperience}
-        keyContrib={nmgKeyContrib}
-      />
-      <ExperienceItem
-        title="Associate Producer / Web Developer"
-        subheader="Codefire Studios"
-        dates="June 2006 - March 2007"
-        content={cfExperience}
-        keyContrib={cfKeyContrib}
-      />
-      <ExperienceItem
-        title="Network Admin / Web Developer / Corporate Pilot"
-        subheader="Schaeffer Industries"
-        dates="January 2006 - June 2006"
-        content={siExperience}
-        keyContrib={siKeyContrib}
-      />
+    <Grid container>
+      <Grid item xs={12}><Typography variant="h1" style={{ fontSize: '32px', padding: '16px' }}>Experience</Typography></Grid>
+      <Grid item xs={12} md={8}>
+        <ExperienceItem
+          title="Delivery Architect"
+          subheader="Nearform (Contractor)"
+          dates="August 2019 - Current"
+          content={nfExperience}
+          keyContrib={nfKeyContrib}
+          samples={nfSamples}
+        />
+        <ExperienceItem
+          title="Director of Engineering and Product Management"
+          subheader="Deseret Digital Media"
+          dates="October 2010 - April 2019"
+          content={ddmExperience}
+          keyContrib={ddmKeyContrib}
+          samples={ddmSamples}
+        />
+        <ExperienceItem
+          title="Product Manager / Web Developer"
+          subheader="Niki Media Group"
+          dates="October 2007 - February 2008"
+          content={nmgExperience}
+          keyContrib={nmgKeyContrib}
+        />
+        <ExperienceItem
+          title="Associate Producer / Web Developer"
+          subheader="Codefire Studios"
+          dates="June 2006 - March 2007"
+          content={cfExperience}
+          keyContrib={cfKeyContrib}
+        />
+        <ExperienceItem
+          title="Network Admin / Web Developer / Corporate Pilot"
+          subheader="Schaeffer Industries"
+          dates="January 2006 - June 2006"
+          content={siExperience}
+          keyContrib={siKeyContrib}
+        />
+      </Grid>
+      <Grid xs={12} md={4}>
+        <StyledCard>
+          <CardHeader
+            title="Links"
+          />
+          <StyledLink href="#"><BookIcon /> &nbsp;The Coder's Guide to JavaScript</StyledLink>
+          <StyledLink href="#"><GitHubIcon /> &nbsp;GitHub</StyledLink>
+          <StyledLink href="#"><InstagramIcon /> &nbsp;@thesecondwatch</StyledLink>
+        </StyledCard>
+      </Grid>
     </Grid>
   </StyledPaper>
 )

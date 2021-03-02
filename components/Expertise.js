@@ -13,7 +13,8 @@ const StyledPaper = withStyles(() => ({
 const StyledCard = withStyles(() => ({
   root: {
     margin: '8px',
-    backgroundColor: '#ffffff'
+    backgroundColor: '#ffffff',
+    height: '95%'
   },
   '& .MuiTypography-root': {
     margin: '8px'

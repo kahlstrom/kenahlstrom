@@ -1,5 +1,7 @@
 import React from 'react'
-import { Button, Card, CardHeader, List, ListItem, ListItemText, Typography, makeStyles, withStyles } from '@material-ui/core'
+import { Button, Card, CardHeader, List, ListItem, ListItemIcon, ListItemText, Typography, makeStyles, withStyles } from '@material-ui/core'
+import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 
 const StyledCard = withStyles(() => ({
   root: {
@@ -39,11 +41,17 @@ const ExperienceItem = ({title, subheader, dates, content, keyContrib, samples})
       <List className={classes.content}>
         {content.map((item) => (
           <ListItem>
+            <ListItemIcon>
+              <CheckCircleOutlineIcon />
+            </ListItemIcon>
             <ListItemText>{item}</ListItemText>
           </ListItem>
           )
         )}
         <ListItem>
+          <ListItemIcon>
+            <CheckCircleIcon />
+          </ListItemIcon>
           <ListItemText><span style={{ fontWeight: 'bold' }}>Key Contribution: </span>{keyContrib}</ListItemText>
         </ListItem>
       </List>
