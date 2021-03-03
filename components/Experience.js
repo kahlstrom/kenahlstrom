@@ -1,5 +1,5 @@
 import React from 'react'
-import { Card, CardHeader, Grid, Link, Paper, Typography, withStyles } from '@material-ui/core'
+import { Card, CardHeader, Grid, Link, List, ListItem, ListItemIcon, ListItemText, Paper, Typography, withStyles } from '@material-ui/core'
 import BookIcon from '@material-ui/icons/Book';
 import GitHubIcon from '@material-ui/icons/GitHub';
 import InstagramIcon from '@material-ui/icons/Instagram';
@@ -8,7 +8,7 @@ import ExperienceItem from './ExperienceItem'
 
 const StyledPaper = withStyles(() => ({
   root: {
-    backgroundColor: '#fcfcfc',
+    backgroundColor: '#f8f8f8',
     boxShadow: 'none'
   }
 }))(Paper);
@@ -19,13 +19,6 @@ const StyledCard = withStyles(() => ({
     backgroundColor: '#ffffff'
   }
 }))(Card);
-
-const StyledLink = withStyles(() => ({
-  root: {
-    display: 'block',
-    margin: '16px',
-  }
-}))(Link);
 
 const nfExperience = [
   'Architect and build web applications for clients',
@@ -135,9 +128,32 @@ const Experience = () => (
           <CardHeader
             title="Links"
           />
-          <StyledLink href="https://medium.com/the-coders-guide-to-javascript"><BookIcon /> &nbsp;The Coder's Guide to JavaScript</StyledLink>
-          <StyledLink href="https://github.com/kahlstrom"><GitHubIcon /> &nbsp;GitHub</StyledLink>
-          <StyledLink href="https://www.instagram.com/thesecondwatch/"><InstagramIcon /> &nbsp;@thesecondwatch</StyledLink>
+          <List>
+            <ListItem>
+              <ListItemIcon>
+                <BookIcon />
+              </ListItemIcon>
+              <ListItemText>
+                <Link href="https://medium.com/the-coders-guide-to-javascript" target="_blank">The Coder's Guide to JavaScript</Link>
+              </ListItemText>
+            </ListItem>
+            <ListItem>
+              <ListItemIcon>
+                <GitHubIcon />
+              </ListItemIcon>
+              <ListItemText>
+                <Link href="https://github.com/kahlstrom" target="_blank">GitHub</Link>
+              </ListItemText>
+            </ListItem>
+            <ListItem>
+              <ListItemIcon>
+                <InstagramIcon />
+              </ListItemIcon>
+              <ListItemText>
+                <Link href="https://www.instagram.com/thesecondwatch/" target="_blank">@thesecondwatch</Link>
+              </ListItemText>
+            </ListItem>
+          </List>
         </StyledCard>
       </Grid>
     </Grid>
