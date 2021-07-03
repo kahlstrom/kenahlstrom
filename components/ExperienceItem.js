@@ -3,13 +3,6 @@ import { Button, Card, CardHeader, List, ListItem, ListItemIcon, ListItemText, T
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 
-const StyledCard = withStyles(() => ({
-  root: {
-    margin: '8px 24px',
-    backgroundColor: '#ffffff'
-  }
-}))(Card);
-
 const StyledButton = withStyles(() => ({
   root: {
     margin: '16px'
@@ -28,14 +21,14 @@ const useStyles = makeStyles({
   }
 })
 
-const ExperienceItem = ({title, subheader, dates, content, keyContrib, samples}) => {
+const ExperienceItem = ({title, employer, dates, content, keyContrib, samples}) => {
   const classes = useStyles()
 
   return (
-    <StyledCard>
+    <Card>
       <CardHeader
         title={title}
-        subheader={subheader}
+        subheader={employer}
         action={<Typography className={classes.dates}>{dates}</Typography>}
       />
       <List className={classes.content}>
@@ -56,7 +49,7 @@ const ExperienceItem = ({title, subheader, dates, content, keyContrib, samples})
         </ListItem>
       </List>
       { samples ? samples.map((item) => (<StyledButton variant="outlined" href={item.link} target="_blank">{item.name}</StyledButton>)) : '' }
-    </StyledCard>
+    </Card>
   )
 }
 

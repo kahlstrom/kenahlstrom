@@ -1,29 +1,30 @@
-import Head from 'next/head'
-import { Typography, withStyles } from '@material-ui/core'
-
-
 import Header from '../components/Header'
-import Expertise from '../components/Expertise'
+import PersonalInfo from '../components/PersonalInfo'
 import Experience from '../components/Experience'
+import { Grid, Typography, makeStyles } from '@material-ui/core'
+
+const useStyles = makeStyles(() => ({
+  sectionHeader: {
+    height: '80px',
+    lineHeight: '80px',
+    verticalAlign: 'middle'
+  }
+}));
 
 export default function Home() {
+  const classes = useStyles();
   return (
     <>
-      <Head>
-        <title>Ken Ahlstrom - Professional Profile</title>
-        <meta charset="utf-8" />
-        <meta name="msapplication-TileColor" content="#da532c" />
-        <meta name="theme-color" content="#ffffff"></meta>
-        <meta name="description" content="Blog, CV / Resume, and other information about Ken Ahlstrom" />
-        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-        <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5" />
-        <link rel="manifest" href="/site.webmanifest" />
-      </Head>
       <Header />
-      <Expertise />
-      <Experience />
+      <Grid container spacing={2}>
+        <Grid item xs={12} md={6} lg={4}>
+          <PersonalInfo />
+        </Grid>
+        <Grid item xs={12} md={6} lg={8}>
+          <Typography variant="h1" className={classes.sectionHeader}>Experience</Typography>
+          <Experience />
+        </Grid>
+      </Grid>
     </>
   )
 }
