@@ -6,13 +6,6 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import theme from '../theme';
 
 export default function MyApp({ Component, pageProps }) {
-  const { Component, pageProps } = props;
-
-  navigator.serviceWorker.getRegistrations().then(function(registrations) {
-  for(let registration of registrations) {
-    registration.unregister()
-  } })
-
   useEffect(() => {
     // Remove the server-side injected CSS.
     const jssStyles = document.querySelector('#jss-server-side');
@@ -30,7 +23,11 @@ export default function MyApp({ Component, pageProps }) {
         <meta name="theme-color" content="#ffffff"></meta>
         <meta name="description" content="Blog, CV / Resume, and other information about Ken Ahlstrom" />
         <meta name="mobile-web-app-capable" content="yes" />
-        <meta name='viewport' content='minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no, viewport-fit=cover' />
+        <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
+        <meta
+          name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"
+        />
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
