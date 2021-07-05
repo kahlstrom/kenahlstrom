@@ -1,15 +1,29 @@
 import React from 'react'
-import { AppBar, Grid, Link, Typography, withStyles } from '@material-ui/core'
+import { AppBar, Button, Grid, Link, Tooltip, Typography, withStyles } from '@material-ui/core'
 import BookIcon from '@material-ui/icons/Book'
 import GitHubIcon from '@material-ui/icons/GitHub'
-import InstagramIcon from '@material-ui/icons/Instagram'
+import LinkedInIcon from '@material-ui/icons/LinkedIn'
 
 const HeaderLink = withStyles(() => ({
   root: {
     color: '#ffffff',
-    padding: '0px 8px'
+    padding: '0px 8px',
+    '&:hover': {
+      textDecoration: 'none'
+    }
   }
 }))(Link);
+
+const HeaderButton = withStyles(() => ({
+  root: {
+    color: '#ffffff',
+    backgroundColor: '#000000',
+    textTransform: 'none',
+    '&:hover': {
+      backgroundColor: '#000000'
+    }
+  }
+}))(Button);
 
 const StyledAppBar = withStyles(() => ({
   root: {
@@ -26,18 +40,35 @@ const StyledAppBar = withStyles(() => ({
 
 const Header = () => (
   <StyledAppBar position="static">
-    <Grid container>
-      <Grid item xs={1}>
-        <img src="favicon-32x32.png" />
-      </Grid>
-      <Grid item xs={8}>
-      </Grid>
-      <Grid item xs={1} />
-      <Grid item xs={2} style={{ textAlign: 'right' }}>
-        <Typography>
-          <HeaderLink href="https://github.com/kahlstrom" target="_blank"><GitHubIcon /></HeaderLink>
-          <HeaderLink href="/KenAhlstromCV-2021.pdf" target="_blank"><BookIcon /></HeaderLink>
-        </Typography>
+    <Grid container style={{ marginTop: '-4px', padding: '0px' }}>
+      <Grid item xs={12} style={{ textAlign: 'right', alignItems: 'center' }}>
+        <HeaderButton
+          variant="contained"
+          color="#ffffff"
+          href="https://github.com/kahlstrom/kenahlstrom"
+          target="_blank"
+          startIcon={<GitHubIcon />}
+        >
+          GitHub
+        </HeaderButton>
+        <HeaderButton
+          variant="contained"
+          color="#ffffff"
+          href="https://www.linkedin.com/in/kenneth-ahlstrom-8284511a/"
+          target="_blank"
+          startIcon={<LinkedInIcon />}
+        >
+          LinkedIn
+        </HeaderButton>
+        <HeaderButton
+          variant="contained"
+          color="#ffffff"
+          href="/KenAhlstromCV-2021.pdf"
+          target="_blank"
+          startIcon={<BookIcon />}
+        >
+          Resume
+        </HeaderButton>
       </Grid>
     </Grid>
   </StyledAppBar>

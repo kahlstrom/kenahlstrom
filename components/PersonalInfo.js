@@ -1,8 +1,9 @@
 import React from 'react'
-import { Avatar, Box, Card, CardHeader, CardContent, Link, List, ListItem, ListItemIcon, ListItemText, makeStyles } from '@material-ui/core'
-import LinkedImg from './LinkedImg'
+import { Avatar, Box, Card, CardHeader, CardContent, Grid, List, ListItem, ListItemIcon, ListItemText, makeStyles } from '@material-ui/core'
+import SkillsImg from './SkillsImg'
 import { default as currentSkills } from '../data/skills'
 import { default as oldSkills } from '../data/oldSkills'
+import { default as abilityHighlights } from '../data/abilityHighlights'
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -21,6 +22,14 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
+const skillGrid = (skills) => (
+  <Grid container spacing={1} style={{ alignItems: 'center' }}>
+    {skills.map((skill) => (
+      <Grid item xs={3}><SkillsImg { ...skill } /></Grid>
+    ))}
+  </Grid>
+)
+
 const PersonalInfo = () => {
   const classes = useStyles();
   return (
@@ -34,36 +43,22 @@ const PersonalInfo = () => {
         />
       <CardContent>
         <List>
-          <ListItem>
-            <ListItemText>Application Architecture</ListItemText>
-          </ListItem>
-          <ListItem>
-            <ListItemText>UX Design</ListItemText>
-          </ListItem>
-          <ListItem>
-            <ListItemText>Project Management</ListItemText>
-          </ListItem>
-          <ListItem>
-            <ListItemText>Team Leadership</ListItemText>
-          </ListItem>
-          <ListItem>
-            <ListItemText>Agile / Scrum</ListItemText>
-          </ListItem>
+          {abilityHighlights.map((ability) => (
+            <ListItem>
+              <ListItemText>{ability}</ListItemText>
+            </ListItem>
+          ))}
           <ListItem>
             <ListItemText>Current Proficient Technologies:</ListItemText>
           </ListItem>
         </List>
-        {currentSkills.map((skill) => (
-          <LinkedImg { ...skill } />
-        ))}
+        {skillGrid(currentSkills)}
         <List>
           <ListItem>
             <ListItemText>Additional Proficient Technologies (not recently used):</ListItemText>
           </ListItem>
         </List>
-        {oldSkills.map((skill) => (
-          <LinkedImg { ...skill } />
-        ))}
+        {skillGrid(oldSkills)}
       </CardContent>
       </Card>
     </Box>

@@ -1,10 +1,13 @@
 import Header from '../components/Header'
 import PersonalInfo from '../components/PersonalInfo'
-import Experience from '../components/Experience'
+import ExperienceItem from '../components/ExperienceItem'
 import { Grid, Typography, makeStyles } from '@material-ui/core'
+
+import { default as experience } from '../data/experience'
 
 const useStyles = makeStyles(() => ({
   sectionHeader: {
+    paddingLeft: '8px',
     height: '80px',
     lineHeight: '80px',
     verticalAlign: 'middle'
@@ -22,7 +25,11 @@ export default function Home() {
         </Grid>
         <Grid item xs={12} md={6} lg={8}>
           <Typography variant="h1" className={classes.sectionHeader}>Experience</Typography>
-          <Experience />
+          <Grid item>
+            {experience.map((item) => (
+              <ExperienceItem {...item} />
+            ))}
+          </Grid>
         </Grid>
       </Grid>
     </>
