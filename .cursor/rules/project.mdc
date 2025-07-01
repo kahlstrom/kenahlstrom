@@ -1,0 +1,42 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+Use Next.js Best Practices with JavaScript
+Avoid using a database. Our data is limited and unchanging and can be kept in local file structures.
+Modularize Components for Widgets
+Centralize API Logic in Next.js API Routes
+Style with Tailwind CSS, Radix, and Shadcn for Consistency
+Ensure Responsive Design for Mobile
+Write Maintainable, Scalable Code
+
+Use functional components with hooks (useState, useEffect) instead of class components.
+Write pure, stateless functions for logic.
+Avoid mutable state outside React's state management; use const for immutable
+Create reusable functions for common tasks.
+Store utilities in src/utils/ and import as needed.
+Compose functions to avoid duplication.
+Choose straightforward logic over complex patterns.
+Use clear, descriptive names.
+Avoid premature optimization.
+Use only required dependencies.
+Avoid additional packages unless essential.
+Validate new dependencies.
+Keep components small, single-purpose.
+Handle errors with user-friendly alerts.
+Create reusable utility classes in src/index.css.
+Structure functions for unit testing.
+Use React DevTools for debugging.
+
+Error Handling: Return { error?, data? }, log to Vercel.
+Performance: Use server components, memoize computations.
+Testing: Generate Jest tests for API routes, components.
+Extensibility: Design for new widgets/integrations (e.g., JSONB integrations.config).
+
+Always take the time to gather needed context before trying to implement code
+Always be rigorous, thorough, context-aware, and act as an absolute expert coder
+Always use best practices and good architecture
+When using an external library or service, actively check its documentation to be sure that you have the most up-to-date methods of using that library or service
+Be sure that you accurate understand existing data structures and variable names and don't just lazily make assumptions
+Write single-purpose functions and abstracted, reusable components
