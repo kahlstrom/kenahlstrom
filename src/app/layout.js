@@ -24,11 +24,20 @@ export const metadata = {
     url: "https://kenahlstrom.dev",
     siteName: "Kenneth Ahlstrom Portfolio",
     type: "website",
+    images: [
+      {
+        url: "/kenahlstrom_ogimage.png",
+        width: 1200,
+        height: 630,
+        alt: "Kenneth Ahlstrom - Software Engineer & Product Manager",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Kenneth Ahlstrom - Software Engineer & Product Manager",
     description: "Senior Software Engineer and Product Manager specializing in team leadership, application architecture, and modern web development.",
+    images: ["/kenahlstrom_ogimage.png"],
   }
 };
 
