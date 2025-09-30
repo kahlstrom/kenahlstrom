@@ -25,42 +25,6 @@ export default function FlightAnimation() {
   const mapWidth = 1200;
   const mapHeight = 900;
   
-  // Debug: Log the actual map SVG position AND our overlay position
-  useEffect(() => {
-    const logPositions = () => {
-      const mapSvg = document.querySelector('svg[width][height]');
-      const overlayDiv = document.querySelector('div[style*="width: 1200px"]');
-      
-      if (mapSvg && overlayDiv) {
-        const mapRect = mapSvg.getBoundingClientRect();
-        const overlayRect = overlayDiv.getBoundingClientRect();
-        const gTransform = mapSvg.querySelector('g')?.getAttribute('transform');
-        
-        console.log('📍 POSITION COMPARISON:', {
-          map: {
-            left: mapRect.left,
-            top: mapRect.top,
-            width: mapRect.width,
-            height: mapRect.height
-          },
-          overlay: {
-            left: overlayRect.left,
-            top: overlayRect.top,
-            width: overlayRect.width,
-            height: overlayRect.height
-          },
-          offset: {
-            x: overlayRect.left - mapRect.left,
-            y: overlayRect.top - mapRect.top
-          },
-          gTransform: gTransform
-        });
-      }
-    };
-    
-    setTimeout(logPositions, 500);
-    setTimeout(logPositions, 1500); // Check again after animations
-  }, []);
 
   // Get random country different from current
   const getRandomCountry = (exclude = null) => {
@@ -70,7 +34,7 @@ export default function FlightAnimation() {
 
   // Convert geo coordinates to screen position percentages
   // Matches react-svg-worldmap transform exactly
-  const geoToScreen = (lon, lat, country) => {
+  const geoToScreen = (lon, lat) => {
     const coords = projection([lon, lat]);
     if (!coords) return { x: 50, y: 50 };
     
@@ -87,15 +51,6 @@ export default function FlightAnimation() {
     // Convert to percentages for positioning
     const xPercent = (scaledX / mapWidth) * 100;
     const yPercent = (scaledY / mapHeight) * 100;
-    
-    console.log(`🛩️ ${country} [${lon}, ${lat}]:`, {
-      raw: { x, y },
-      afterTranslate: { x, y: translatedY },
-      afterScale: { x: scaledX, y: scaledY },
-      percent: { x: xPercent, y: yPercent },
-      absolutePixels: { x: scaledX, y: scaledY },
-      mapDims: { width: mapWidth, height: mapHeight }
-    });
     
     return { x: xPercent, y: yPercent };
   };
@@ -165,16 +120,8 @@ export default function FlightAnimation() {
   // Convert geographic coordinates to screen positions
   const fromGeo = countryCoordinates[fromCountry];
   const toGeo = countryCoordinates[toCountry];
-  const from = geoToScreen(fromGeo.lon, fromGeo.lat, fromCountry);
-  const to = geoToScreen(toGeo.lon, toGeo.lat, toCountry);
-  
-  console.log('Flight:', {
-    from: fromCountry,
-    to: toCountry,
-    fromPos: from,
-    toPos: to,
-    isFlying
-  });
+  const from = geoToScreen(fromGeo.lon, fromGeo.lat);
+  const to = geoToScreen(toGeo.lon, toGeo.lat);
   
   // Calculate angle for airplane rotation (nose pointing toward destination)
   // Add 90 degrees to align the airplane SVG nose correctly
