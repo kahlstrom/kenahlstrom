@@ -6,6 +6,7 @@ import { geoMercator } from 'd3-geo';
 import Airplane from '@/components/atoms/Airplane';
 import { countryCoordinates, visitedCountryNames } from '@/data/countryCoordinates';
 import { getFlightTime, flightTimeToAnimationDuration } from '@/data/flightTimes';
+import { getRandomFunFact } from '@/data/countryFunFacts';
 
 /**
  * FlightAnimation - Animates an airplane flying between visited countries
@@ -19,6 +20,7 @@ export default function FlightAnimation() {
   const [isFlying, setIsFlying] = useState(false);
   const [layoverTime, setLayoverTime] = useState(0);
   const [flightDurationSeconds, setFlightDurationSeconds] = useState(0);
+  const [funFact, setFunFact] = useState('');
 
   // Create D3 projection matching react-svg-worldmap
   const projection = useMemo(() => geoMercator(), []);
@@ -99,6 +101,10 @@ export default function FlightAnimation() {
       const layover = Math.floor(Math.random() * 59) + 2;
       setLayoverTime(layover);
       
+      // Get a random fun fact for this country
+      const fact = getRandomFunFact(toCountry);
+      setFunFact(fact);
+      
       // Layover message
       setTimeout(() => {
         const nextDestination = getRandomCountry(toCountry);
@@ -116,6 +122,7 @@ export default function FlightAnimation() {
         // Start next flight after layover
         setTimeout(() => {
           clearInterval(countdownInterval);
+          setFunFact(''); // Clear fun fact when departing
           const nextFlightHours = getFlightTime(toCountry, nextDestination);
           const nextAnimDuration = flightTimeToAnimationDuration(nextFlightHours);
           
@@ -200,6 +207,48 @@ export default function FlightAnimation() {
           >
             <Airplane className="text-green-400 w-8 h-8" />
           </motion.div>
+
+          {/* Fun Fact Tooltip - appears during layover at the country location */}
+          <AnimatePresence>
+            {funFact && !isFlying && toCountry && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8, y: -10 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.8, y: -10 }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
+                className="absolute pointer-events-none z-20"
+                style={{
+                  left: `${to.x}%`,
+                  top: `${to.y}%`,
+                  transform: 'translate(-50%, -120%)'
+                }}
+              >
+                {/* Tooltip with pointer */}
+                <div className="relative" style={{ maxWidth: '350px', minWidth: '280px' }}>
+                  <div className="bg-amber-50 border-3 border-amber-600 rounded-xl px-5 py-4 shadow-2xl">
+                    <div className="flex items-start gap-3">
+                      <span className="text-2xl flex-shrink-0">💡</span>
+                      <div>
+                        <p className="text-amber-900 font-semibold text-sm mb-1">Did you know?</p>
+                        <p className="text-slate-800 text-sm leading-relaxed">{funFact}</p>
+                      </div>
+                    </div>
+                  </div>
+                  {/* Pointer arrow */}
+                  <div 
+                    className="absolute left-1/2 transform -translate-x-1/2 -bottom-2"
+                    style={{
+                      width: 0,
+                      height: 0,
+                      borderLeft: '10px solid transparent',
+                      borderRight: '10px solid transparent',
+                      borderTop: '12px solid #d97706'
+                    }}
+                  />
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
 
