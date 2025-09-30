@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { geoMercator } from 'd3-geo';
 import Airplane from '@/components/atoms/Airplane';
@@ -12,6 +12,7 @@ import { getRandomFunFact } from '@/data/countryFunFacts';
  * FlightAnimation - Animates an airplane flying between visited countries
  * Shows arrival/departure messages as it travels
  * Uses D3's geoMercator projection to match react-svg-worldmap exactly
+ * Now fully responsive - adapts to any screen size
  */
 export default function FlightAnimation() {
   const [fromCountry, setFromCountry] = useState(null);
@@ -25,11 +26,58 @@ export default function FlightAnimation() {
   // Create D3 projection matching react-svg-worldmap
   const projection = useMemo(() => geoMercator(), []);
 
-  // Map dimensions - hardcoded to match BackgroundMap.jsx
-  // size="xxl" = 1200px width, height = width * 0.75
-  const mapWidth = 1200;
-  const mapHeight = 900;
+  // Container ref for measuring actual rendered dimensions
+  const containerRef = useRef(null);
   
+  // Map dimensions and position - dynamically measured from WorldMap SVG
+  // Default: size="xxl" = 1200px width, height = width * 0.75
+  const [mapDimensions, setMapDimensions] = useState({ 
+    width: 1200, 
+    height: 900,
+    left: 0,
+    top: 0
+  });
+  
+  const mapWidth = mapDimensions.width;
+  const mapHeight = mapDimensions.height;
+  
+  // Measure WorldMap SVG dimensions and position to perfectly overlay
+  useEffect(() => {
+    const updateDimensions = () => {
+      // Find the BackgroundMap's WorldMap SVG element
+      const mapContainer = document.querySelector('.fixed.inset-0.flex.items-center.justify-center.pointer-events-none.z-0');
+      const worldMapSvg = mapContainer?.querySelector('svg');
+      
+      if (worldMapSvg) {
+        // Measure the actual SVG element created by WorldMap
+        const svgRect = worldMapSvg.getBoundingClientRect();
+        const { width, height, left, top } = svgRect;
+        
+        if (width > 0 && height > 0) {
+          setMapDimensions({ width, height, left, top });
+          return;
+        }
+      }
+      
+      // Fallback: use default dimensions if SVG not found
+      // This ensures the component works even if BackgroundMap isn't rendered yet
+    };
+    
+    // Initial measurement with a small delay to ensure WorldMap renders
+    const initialTimer = setTimeout(updateDimensions, 100);
+    
+    // Additional measurement for safety after longer delay
+    const secondTimer = setTimeout(updateDimensions, 300);
+    
+    // Update on window resize
+    window.addEventListener('resize', updateDimensions);
+    
+    return () => {
+      clearTimeout(initialTimer);
+      clearTimeout(secondTimer);
+      window.removeEventListener('resize', updateDimensions);
+    };
+  }, []);
 
   // Get random country different from current
   const getRandomCountry = (exclude = null) => {
@@ -155,11 +203,18 @@ export default function FlightAnimation() {
   const angle = Math.atan2(to.y - from.y, to.x - from.x) * (180 / Math.PI) + 90;
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center pointer-events-none z-10">
-      {/* EXACT match to BackgroundMap container structure */}
-      <div className="w-full max-w-[1400px] px-8">
-        {/* Position layer matching the map SVG dimensions - NO extra div, NO extra padding */}
-        <div className="relative" style={{ width: `${mapWidth}px`, height: `${mapHeight}px` }}>
+    <div className="fixed inset-0 pointer-events-none z-10">
+      {/* Overlay positioned exactly where WorldMap SVG is rendered */}
+      <div 
+        ref={containerRef}
+        className="absolute" 
+        style={{ 
+          left: `${mapDimensions.left}px`,
+          top: `${mapDimensions.top}px`,
+          width: `${mapWidth}px`,
+          height: `${mapHeight}px`
+        }}
+      >
           {/* Dashed flight path - using percentages */}
           {isFlying && (
             <svg className="absolute inset-0 w-full h-full">
@@ -250,7 +305,6 @@ export default function FlightAnimation() {
             )}
           </AnimatePresence>
         </div>
-      </div>
 
       {/* Arrival/Departure messages - positioned at bottom */}
       <AnimatePresence>
