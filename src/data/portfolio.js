@@ -63,7 +63,7 @@ export const experiences = [
 export const projects = [
   {
     title: "AtSynct",
-    description: "A comprehensive SaaS platform that I built and currently sell, providing innovative solutions for business automation and workflow management.",
+    description: "A comprehensive SaaS platform, providing innovative solutions for business automation and workflow management.",
     technologies: ["SaaS", "Business Automation", "Workflow Management"],
     link: "https://atsynct.com",
     type: "SaaS Platform",
