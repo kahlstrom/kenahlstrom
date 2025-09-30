@@ -3,11 +3,13 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Navigation from '@/components/organisms/Navigation';
 import TerminalFooter from '@/components/organisms/TerminalFooter';
 import BackgroundMap from '@/components/atoms/BackgroundMap';
+import FlightAnimation from '@/components/molecules/FlightAnimation';
 
 export default function PortfolioLayout({ sections, children }) {
   const [activeSection, setActiveSection] = useState('mission');
   const [terminalLines, setTerminalLines] = useState([]);
   const [currentTime, setCurrentTime] = useState(new Date());
+  const [showMap, setShowMap] = useState(false);
 
   useEffect(() => {
     const timer = setInterval(() => setCurrentTime(new Date()), 1000);
@@ -62,10 +64,35 @@ export default function PortfolioLayout({ sections, children }) {
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.3 }}
             >
-              <h1 className="text-2xl font-bold text-amber-400 mb-6 font-mono">
-                {sections[activeSection].title}
-              </h1>
-              {children(activeSection)}
+              {/* Page Title with Map Toggle */}
+              <div className="flex items-center justify-between mb-6">
+                <h1 className="text-2xl font-bold text-amber-400 font-mono">
+                  {sections[activeSection].title}
+                </h1>
+                <button
+                  onClick={() => setShowMap(!showMap)}
+                  className="text-sm font-mono text-cyan-400 hover:text-cyan-300 transition-colors underline decoration-dotted underline-offset-4"
+                >
+                  {showMap ? '← See Postcards' : 'See the Map →'}
+                </button>
+              </div>
+              
+              {/* Content - hidden when showing map */}
+              <AnimatePresence mode="wait">
+                {!showMap && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.4 }}
+                  >
+                    {children(activeSection)}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+              
+              {/* Flight Animation in Map View */}
+              {showMap && <FlightAnimation />}
             </motion.div>
           </AnimatePresence>
         </div>

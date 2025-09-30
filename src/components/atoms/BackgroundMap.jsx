@@ -21,7 +21,7 @@ export default function BackgroundMap() {
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center pointer-events-none  z-0">
+    <div className="fixed inset-0 flex items-center justify-center pointer-events-none z-0 transition-opacity duration-500">
       <div className="w-full max-w-[1400px] px-8">
         <WorldMap
           color={mapStyling.color}
