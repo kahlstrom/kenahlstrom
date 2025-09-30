@@ -1,12 +1,13 @@
 export const skillCategories = {
   "Current Stack": [
-    "JavaScript", "TypeScript", "ReactJS", "NodeJS", "GraphQL", 
-    "Hasura", "PostgreSQL", "NextJS", "GatsbyJS", "Material-UI", 
-    "Styled-Components", "Jest", "ESLint", "Prettier", "AWS", "GCP"
+    "JavaScript", "TypeScript", "ReactJS", "NodeJS", "Fastify", "NestJS", "GraphQL", "MongoDB", 
+    "PostgreSQL", "Hasura", "NextJS", "TailwindCSS", "shadcn", "Jest", "ESLint", 
+    "Prettier", "AWS", "GCP", "Docker", "Kubernetes", "AI-assisted development"
   ],
   "Additional Expertise": [
-    "Python", "ElasticSearch", "MongoDB", "MySQL", 
-    "jQuery", "PHP", "Team Leadership", "Agile/Scrum"
+    "Python", "ElasticSearch", "MySQL", "Redis", "Kafka", "GatsbyJS",
+    "Material-UI", "Styled-Components","jQuery", "PHP", "Team Leadership", "Agile/Scrum",
+    "Product Management", "Project Management", "AI", "Machine Learning"
   ]
 };
 
@@ -17,9 +18,9 @@ export const experiences = [
     period: "September 2021 - May 2025",
     description: "Design, architect, and build productivity applications under the Workfront brand. Maintain and improve legacy Workfront applications written in Java and Javascript.",
     highlights: [
-      "Lead developer in creating the Boards product for Workfront (similar to Trello)",
-      "Earned the company millions of dollars through saved renewed contracts",
-      "Acquired new contracts where customers specifically mentioned Boards as the reason for their business",
+      "Lead developer in creating the Boards project management product for Workfront",
+      "The development of Boards was directly mentioned as responsible for saving at least $26 million in previously at-risk contracts",
+      "Acquired at least $10 million in new contracts where customers specifically mentioned Boards as the reason for their business",
       "Architect modern productivity applications under enterprise-grade requirements"
     ]
   },
@@ -29,10 +30,9 @@ export const experiences = [
     period: "July 2019 - September 2021",
     description: "Architect and build web applications for clients. Lead disparate and changing teams as clients, arrangements, and projects change.",
     highlights: [
-      "Delivery of multiple projects using various technologies",
-      "Team leadership for various clients",
-      "Open-source contributions",
-      "Technology stack adaptation"
+      "Delivery of multiple projects for a variety of clients, using various technologies",
+      "Successful team leadership of fully remote teams across language, culture, and timezone barriers",
+      "Open-source contributions to Fastify"
     ]
   },
   {
@@ -41,10 +41,10 @@ export const experiences = [
     period: "October 2010 - April 2019",
     description: "Designed, architected, and built web applications from concept to completion. Led and mentored teams through complex application projects.",
     highlights: [
-      "Built internal application unifying corporate sales and delivery processes",
-      "Achieved audit compliance and improved sales efficiency",
-      "Coordinated across multiple departments and distributed teams",
-      "Maintained performant, agile, and transparent project teams"
+      "Designed, architected, and built internal application unifying corporate sales and delivery processes, linking proprietary software with Salesforce and Google Ad Manager to create a seamless experience for the sales team",
+      "Achieved audit compliance and improved sales efficiency, building a tool that multiple other (internal and external) teams had failed to build",
+      "Implemented the company's first machine-learning driven code as an analytics/recommendation dashboard for sellers on KSL Cars",
+      "As a director, took responsibility over teams, projects, and roadmaps, with a focus on delivering value to the business"
     ]
   },
   {
@@ -78,11 +78,11 @@ export const projects = [
     status: "ACTIVE"
   },
   {
-    title: "EFQM Corporate Site",
-    description: "Corporate website development for the European Foundation for Quality Management.",
+    title: "EFQM Assess Tool",
+    description: "Business analysis tool for the European Foundation for Quality Management.",
     technologies: ["React", "Node.js", "Corporate Web"],
     link: "https://efqm.org",
-    type: "Corporate Website",
+    type: "Business Platform",
     status: "DEPLOYED"
   },
   {
@@ -97,9 +97,9 @@ export const projects = [
 
 export const personalInfo = {
   name: "Kenneth Ahlstrom",
-  title: "Software Engineer | Product Manager | Team Leader",
-  location: "Highland, UT",
-  status: "Available for new opportunities",
+  title: "Software Engineer | Consultant | Problem Solver",
+  location: "US Citizen",
+  status: "Specialized in getting teams and projects from idea to launch",
   profileImage: "/ProfileImage.png",
   links: {
     linkedin: "https://www.linkedin.com/in/kenneth-ahlstrom-8284511a/",
