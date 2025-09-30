@@ -203,18 +203,20 @@ export default function FlightAnimation() {
   const angle = Math.atan2(to.y - from.y, to.x - from.x) * (180 / Math.PI) + 90;
 
   return (
-    <div className="fixed inset-0 pointer-events-none z-10">
-      {/* Overlay positioned exactly where WorldMap SVG is rendered */}
-      <div 
-        ref={containerRef}
-        className="absolute" 
-        style={{ 
-          left: `${mapDimensions.left}px`,
-          top: `${mapDimensions.top}px`,
-          width: `${mapWidth}px`,
-          height: `${mapHeight}px`
-        }}
-      >
+    <>
+      {/* Map overlay container */}
+      <div className="fixed inset-0 pointer-events-none z-10">
+        {/* Overlay positioned exactly where WorldMap SVG is rendered */}
+        <div 
+          ref={containerRef}
+          className="absolute" 
+          style={{ 
+            left: `${mapDimensions.left}px`,
+            top: `${mapDimensions.top}px`,
+            width: `${mapWidth}px`,
+            height: `${mapHeight}px`
+          }}
+        >
           {/* Dashed flight path - using percentages */}
           {isFlying && (
             <svg className="absolute inset-0 w-full h-full">
@@ -267,15 +269,29 @@ export default function FlightAnimation() {
           <AnimatePresence>
             {funFact && !isFlying && toCountry && (
               <motion.div
-                initial={{ opacity: 0, scale: 0.8, y: -10 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.8, y: -10 }}
+                initial={{ 
+                  opacity: 0, 
+                  scale: 0.8,
+                  x: '-50%',
+                  y: 'calc(-100% - 20px)'
+                }}
+                animate={{ 
+                  opacity: 1, 
+                  scale: 1,
+                  x: '-50%',  // Center horizontally
+                  y: 'calc(-100% - 20px)'  // Position arrow tip at country
+                }}
+                exit={{ 
+                  opacity: 0, 
+                  scale: 0.8,
+                  x: '-50%',
+                  y: 'calc(-100% - 20px)'
+                }}
                 transition={{ duration: 0.5, ease: "easeOut" }}
                 className="absolute pointer-events-none z-20"
                 style={{
                   left: `${to.x}%`,
-                  top: `${to.y}%`,
-                  transform: 'translate(-50%, -120%)'
+                  top: `${to.y}%`
                 }}
               >
                 {/* Tooltip with pointer */}
@@ -305,25 +321,27 @@ export default function FlightAnimation() {
             )}
           </AnimatePresence>
         </div>
+      </div>
 
-      {/* Arrival/Departure messages - positioned at bottom */}
+      {/* Arrival/Departure messages - positioned at bottom, fully responsive */}
+      {/* Now OUTSIDE the map container for proper fixed positioning */}
       <AnimatePresence>
         {message && (
           <motion.div
-            initial={{ opacity: 0, y: 20, scale: 0.9 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -20, scale: 0.9 }}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
             transition={{ duration: 0.4 }}
-            className="absolute bottom-20 left-1/2 transform -translate-x-1/2"
+            className="fixed bottom-8 sm:bottom-12 md:bottom-20 left-1/2 -translate-x-1/2 px-4 w-full max-w-[95vw] sm:max-w-none sm:w-auto pointer-events-none z-50"
           >
-            <div className="bg-slate-800/95 backdrop-blur-sm border-2 border-green-400 rounded-lg px-6 py-3 shadow-2xl">
-              <p className="text-green-300 font-mono text-lg font-bold whitespace-nowrap">
+            <div className="bg-slate-800/95 backdrop-blur-sm border-2 border-green-400 rounded-lg px-3 py-2 sm:px-4 sm:py-2.5 md:px-6 md:py-3 shadow-2xl">
+              <p className="text-green-300 font-mono text-xs sm:text-sm md:text-base lg:text-lg font-bold text-center break-words">
                 {message}
               </p>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
-    </div>
+    </>
   );
 }

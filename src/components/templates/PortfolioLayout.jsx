@@ -65,10 +65,12 @@ export default function PortfolioLayout({ sections, children }) {
               transition={{ duration: 0.3 }}
             >
               {/* Page Title with Map Toggle */}
-              <div className="flex items-center justify-between mb-6">
-                <h1 className="text-2xl font-bold text-amber-400 font-mono">
-                  {sections[activeSection].title}
-                </h1>
+              <div className={`flex items-center mb-6 ${showMap ? 'justify-end' : 'justify-between'}`}>
+                {!showMap && (
+                  <h1 className="text-2xl font-bold text-amber-400 font-mono">
+                    {sections[activeSection].title}
+                  </h1>
+                )}
                 <button
                   onClick={() => setShowMap(!showMap)}
                   className="text-sm font-mono text-cyan-400 hover:text-cyan-300 transition-colors underline decoration-dotted underline-offset-4"
