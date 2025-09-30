@@ -1,31 +1,24 @@
+import Postcard from '@/components/atoms/Postcard';
 import ProfileHeader from '@/components/molecules/ProfileHeader';
-import InfoPanel from '@/components/molecules/InfoPanel';
-import TravelMap from '@/components/molecules/TravelMap';
-import { professionalFocus, personalInterests } from '@/data/portfolio';
+import SubstackFeed from '@/components/molecules/SubstackFeed';
+import XFeed from '@/components/molecules/XFeed';
 
 export default function OverviewSection() {
   return (
     <div className="space-y-6">
-      <ProfileHeader />
+      <Postcard delay={0.1} hasStamp={true}>
+        <ProfileHeader />
+      </Postcard>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <InfoPanel
-          title="PROFESSIONAL FOCUS"
-          items={professionalFocus}
-          borderColor="border-amber-400/30"
-          titleColor="text-amber-400"
-        />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <Postcard delay={0.3} stampColor="amber">
+          <SubstackFeed />
+        </Postcard>
         
-        <InfoPanel
-          title="PERSONAL INTERESTS"
-          items={personalInterests}
-          borderColor="border-green-400/30"
-          titleColor="text-green-400"
-        />
+        <Postcard delay={0.4} stampColor="green">
+          <XFeed />
+        </Postcard>
       </div>
-
-      {/* Travel Map */}
-      <TravelMap />
     </div>
   );
 }
