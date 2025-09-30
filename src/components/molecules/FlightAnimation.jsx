@@ -1,10 +1,11 @@
 "use client";
 
-import { useState, useEffect, useMemo, useRef } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { geoMercator } from 'd3-geo';
 import Airplane from '@/components/atoms/Airplane';
 import { countryCoordinates, visitedCountryNames } from '@/data/countryCoordinates';
+import { getFlightTime, flightTimeToAnimationDuration } from '@/data/flightTimes';
 
 /**
  * FlightAnimation - Animates an airplane flying between visited countries
@@ -16,6 +17,8 @@ export default function FlightAnimation() {
   const [toCountry, setToCountry] = useState(null);
   const [message, setMessage] = useState('');
   const [isFlying, setIsFlying] = useState(false);
+  const [layoverTime, setLayoverTime] = useState(0);
+  const [flightDurationSeconds, setFlightDurationSeconds] = useState(0);
 
   // Create D3 projection matching react-svg-worldmap
   const projection = useMemo(() => geoMercator(), []);
@@ -55,65 +58,82 @@ export default function FlightAnimation() {
     return { x: xPercent, y: yPercent };
   };
 
-  // Initialize with first flight - must not animate initially
+  // Initialize with first flight
   useEffect(() => {
-    // Small delay to ensure component is mounted
     const initTimer = setTimeout(() => {
       const start = getRandomCountry();
       const destination = getRandomCountry(start);
+      const flightHours = getFlightTime(start, destination);
+      const animDuration = flightTimeToAnimationDuration(flightHours);
+      
       setFromCountry(start);
       setToCountry(destination);
-      setIsFlying(false); // Start grounded at departure
-      setMessage(`Departing from ${start}`);
+      setFlightDurationSeconds(animDuration);
+      setIsFlying(false);
+      setMessage(`Departing ${start} for ${destination}: Travel time ${animDuration.toFixed(1)}s`);
       
-      // After showing departure message, start flying
+      // Show departure message, then start flying
       setTimeout(() => {
         setIsFlying(true);
-        setMessage('');
-      }, 2000);
+        setMessage(`Enroute to ${destination}: Travel time ${animDuration.toFixed(1)}s`);
+      }, 3000);
     }, 100);
     
     return () => clearTimeout(initTimer);
   }, []);
 
-  // Handle flight sequence
+  // Handle flight sequence with realistic timing
   useEffect(() => {
     if (!isFlying || !toCountry) return;
 
-    // Get geo coordinates and convert to screen positions
-    const fromGeo = countryCoordinates[fromCountry];
-    const toGeo = countryCoordinates[toCountry];
-    const fromScreen = geoToScreen(fromGeo.lon, fromGeo.lat);
-    const toScreen = geoToScreen(toGeo.lon, toGeo.lat);
-    
-    // Calculate flight duration based on screen distance
-    const distance = Math.sqrt(
-      Math.pow(toScreen.x - fromScreen.x, 2) + Math.pow(toScreen.y - fromScreen.y, 2)
-    );
-    const flightDuration = Math.max(3000, distance * 80); // Min 3s, scales with distance
+    const flightDurationMs = flightDurationSeconds * 1000;
 
     // Arrival message
     const arrivalTimer = setTimeout(() => {
       setIsFlying(false);
-      setMessage(`Arriving in ${toCountry}`);
+      // Update fromCountry immediately so airplane stays at destination during layover
+      setFromCountry(toCountry);
+      setMessage(`Arriving at ${toCountry}`);
       
-      // Departure message
+      // Generate random layover time (2-60 seconds)
+      const layover = Math.floor(Math.random() * 59) + 2;
+      setLayoverTime(layover);
+      
+      // Layover message
       setTimeout(() => {
-        setMessage(`Departing from ${toCountry}`);
+        const nextDestination = getRandomCountry(toCountry);
+        setMessage(`Layover in ${toCountry}. Departing for ${nextDestination} in ${layover}s`);
         
-        // Start next flight
+        // Countdown layover
+        let remainingTime = layover;
+        const countdownInterval = setInterval(() => {
+          remainingTime--;
+          if (remainingTime > 0) {
+            setMessage(`Layover in ${toCountry}. Departing for ${nextDestination} in ${remainingTime}s`);
+          }
+        }, 1000);
+        
+        // Start next flight after layover
         setTimeout(() => {
-          const nextDestination = getRandomCountry(toCountry);
-          setFromCountry(toCountry);
+          clearInterval(countdownInterval);
+          const nextFlightHours = getFlightTime(toCountry, nextDestination);
+          const nextAnimDuration = flightTimeToAnimationDuration(nextFlightHours);
+          
+          // fromCountry is already set to toCountry upon arrival
           setToCountry(nextDestination);
-          setMessage('');
-          setIsFlying(true);
-        }, 2500);
+          setFlightDurationSeconds(nextAnimDuration);
+          setMessage(`Departing ${toCountry} for ${nextDestination}: Travel time ${nextAnimDuration.toFixed(1)}s`);
+          
+          setTimeout(() => {
+            setIsFlying(true);
+            setMessage(`Enroute to ${nextDestination}: Travel time ${nextAnimDuration.toFixed(1)}s`);
+          }, 3000);
+        }, layover * 1000);
       }, 2500);
-    }, flightDuration);
+    }, flightDurationMs);
 
     return () => clearTimeout(arrivalTimer);
-  }, [isFlying, toCountry, fromCountry]);
+  }, [isFlying, toCountry, fromCountry, flightDurationSeconds]);
 
   if (!fromCountry || !toCountry) return null;
 
@@ -126,12 +146,6 @@ export default function FlightAnimation() {
   // Calculate angle for airplane rotation (nose pointing toward destination)
   // Add 90 degrees to align the airplane SVG nose correctly
   const angle = Math.atan2(to.y - from.y, to.x - from.x) * (180 / Math.PI) + 90;
-  
-  // Calculate flight duration for animation
-  const distance = Math.sqrt(
-    Math.pow(to.x - from.x, 2) + Math.pow(to.y - from.y, 2)
-  );
-  const flightDuration = Math.max(3, distance / 12);
 
   return (
     <div className="fixed inset-0 flex items-center justify-center pointer-events-none z-10">
@@ -170,14 +184,14 @@ export default function FlightAnimation() {
               y: '-50%'
             }}
             animate={{ 
-              left: `${to.x}%`,
-              top: `${to.y}%`,
+              left: isFlying ? `${to.x}%` : `${from.x}%`,
+              top: isFlying ? `${to.y}%` : `${from.y}%`,
               rotate: angle,
               x: '-50%',
               y: '-50%'
             }}
             transition={{ 
-              duration: isFlying ? flightDuration : 0,
+              duration: isFlying ? flightDurationSeconds : 0,
               ease: "linear"
             }}
             style={{ 
@@ -189,7 +203,7 @@ export default function FlightAnimation() {
         </div>
       </div>
 
-      {/* Arrival/Departure messages */}
+      {/* Arrival/Departure messages - positioned at bottom */}
       <AnimatePresence>
         {message && (
           <motion.div
@@ -197,7 +211,7 @@ export default function FlightAnimation() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -20, scale: 0.9 }}
             transition={{ duration: 0.4 }}
-            className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+            className="absolute bottom-20 left-1/2 transform -translate-x-1/2"
           >
             <div className="bg-slate-800/95 backdrop-blur-sm border-2 border-green-400 rounded-lg px-6 py-3 shadow-2xl">
               <p className="text-green-300 font-mono text-lg font-bold whitespace-nowrap">
