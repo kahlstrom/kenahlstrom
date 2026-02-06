@@ -70,11 +70,11 @@ export const projects = [
     status: "ACTIVE"
   },
   {
-    title: "SaaS Bazaar",
-    description: "A marketplace platform connecting SaaS solutions with businesses, featuring advanced filtering, analytics, and integration capabilities.",
-    technologies: ["React", "Node.js", "Marketplace", "Analytics"],
-    link: "https://saasbazaar.io",
-    type: "Marketplace Platform",
+    title: "Clan Roster",
+    description: "A community of video game clans and their members, featuring robust social features and Discord integration.",
+    technologies: ["React", "Node.js", "3rd PartyIntegrations", "Social Features"],
+    link: "https://clanroster.com",
+    type: "Community Platform",
     status: "ACTIVE"
   },
   {
