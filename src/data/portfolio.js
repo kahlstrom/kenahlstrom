@@ -81,7 +81,7 @@ export const projects = [
     title: "This Domain Sucks!",
     description: "Experimental playground for various different ideas I kick around.",
     technologies: ["React", "Node.js", "PostgreSQL", "AI Integration", "Experiemental Features"],
-    link: "https://thisdomainsucks.com",
+    link: "https://thisdomain.sucks",
     type: "Experimental Playground",
     status: "ACTIVE"
   },
