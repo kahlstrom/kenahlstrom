@@ -67,7 +67,7 @@ export const projects = [
     technologies: ["SaaS", "Business Automation", "Workflow Management"],
     link: "https://atsynct.com",
     type: "SaaS Platform",
-    status: "ACTIVE"
+    status: "DEPLOYED"
   },
   {
     title: "Clan Roster",
@@ -75,7 +75,23 @@ export const projects = [
     technologies: ["React", "Node.js", "3rd PartyIntegrations", "Social Features"],
     link: "https://clanroster.com",
     type: "Community Platform",
+    status: "DEPLOYED"
+  },
+  {
+    title: "This Domain Sucks!",
+    description: "Experimental playground for various different ideas I kick around.",
+    technologies: ["React", "Node.js", "PostgreSQL", "AI Integration", "Experiemental Features"],
+    link: "https://thisdomainsucks.com",
+    type: "Experimental Playground",
     status: "ACTIVE"
+  },
+  {
+    title: "Adobe Workfront Boards",
+    description: "An enterprise-grade project management tool for the Adobe Workfront platform.",
+    technologies: ["React", "Node.js", "MongoDB", "Kafka", "Kubernetes"],
+    link: "https://experienceleague.adobe.com/en/docs/workfront/using/agile/boards-overview",
+    type: "SaaS Platform",
+    status: "DEPLOYED"
   },
   {
     title: "EFQM Assess Tool",
