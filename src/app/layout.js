@@ -11,12 +11,17 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+};
+
 export const metadata = {
+  metadataBase: new URL("https://kenahlstrom.dev"),
   title: "Kenneth Ahlstrom - Software Engineer & Product Manager",
   description: "Senior Software Engineer and Product Manager specializing in team leadership, application architecture, and modern web development. Currently building innovative solutions with React, Node.js, and enterprise technologies.",
   keywords: "Kenneth Ahlstrom, Software Engineer, Product Manager, Team Lead, React, Node.js, JavaScript, TypeScript, Adobe, Utah",
   author: "Kenneth Ahlstrom",
-  viewport: "width=device-width, initial-scale=1",
   robots: "index, follow",
   openGraph: {
     title: "Kenneth Ahlstrom - Software Engineer & Product Manager",

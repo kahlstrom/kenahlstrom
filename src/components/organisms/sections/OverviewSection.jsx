@@ -1,12 +1,12 @@
 import Postcard from '@/components/atoms/Postcard';
 import ProfileHeader from '@/components/molecules/ProfileHeader';
 import SubstackFeed from '@/components/molecules/SubstackFeed';
-import XFeed from '@/components/molecules/XFeed';
+import RecentUpdates from '@/components/molecules/RecentUpdates';
 
 export default function OverviewSection() {
   return (
     <div className="space-y-6">
-      <Postcard delay={0.1} hasStamp={true}>
+      <Postcard delay={0.1} hasStamp={true} contentClassName="pb-4">
         <ProfileHeader />
       </Postcard>
       
@@ -16,7 +16,7 @@ export default function OverviewSection() {
         </Postcard>
         
         <Postcard delay={0.4} stampColor="green">
-          <XFeed />
+          <RecentUpdates />
         </Postcard>
       </div>
     </div>

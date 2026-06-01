@@ -1,29 +1,9 @@
 'use client';
 
-import { useState } from 'react';
 import Postcard from '@/components/atoms/Postcard';
-import { LinkedInLogoIcon, GitHubLogoIcon, ReaderIcon, EnvelopeClosedIcon, CheckCircledIcon } from '@radix-ui/react-icons';
-import { Button } from '@/components/ui/button';
-import { personalInfo } from '@/data/portfolio';
-import { generateResumePDF } from '@/utils/pdfGenerator';
+import ProfileLinks from '@/components/molecules/ProfileLinks';
 
 export default function ContactSection() {
-  const [emailRevealed, setEmailRevealed] = useState(false);
-  
-  // Obfuscated email - reconstructed on client side to avoid bot scraping
-  const getEmail = () => {
-    const parts = ['public', 'atsynct', 'com'];
-    return `${parts[0]}@${parts[1]}.${parts[2]}`;
-  };
-  
-  const handleEmailClick = () => {
-    if (!emailRevealed) {
-      setEmailRevealed(true);
-    } else {
-      window.open(`mailto:${getEmail()}`, '_blank');
-    }
-  };
-  
   const availabilityItems = [
     { icon: '💼', text: 'Consulting engagements' },
     { icon: '🚀', text: 'Freelance projects' },
@@ -54,58 +34,16 @@ export default function ContactSection() {
         </div>
       </div>
       
-      {/* Email contact */}
+      {/* Contact links */}
       <div className="mb-6 p-4 bg-amber-50 rounded-lg border-2 border-amber-200">
-        <div className="flex items-center justify-center gap-2 mb-2">
-          <EnvelopeClosedIcon className="text-amber-700 w-5 h-5" />
-          <h4 className="text-amber-900 font-mono font-bold text-lg">Contact Email</h4>
-        </div>
-        <button
-          onClick={handleEmailClick}
-          className="text-amber-900 hover:text-amber-950 font-mono font-bold text-lg underline cursor-pointer transition-colors"
-          aria-label={emailRevealed ? "Open email client" : "Click to reveal email address"}
-        >
-          {emailRevealed ? getEmail() : 'public [at] atsynct [dot] com'}
-        </button>
-        {!emailRevealed && (
-          <p className="text-amber-700 text-xs mt-2 font-mono">
-            Click to reveal full email address
-          </p>
-        )}
+        <ProfileLinks className="justify-center" />
       </div>
       
       {/* Disclaimer */}
-      <p className="text-gray-600 font-mono text-sm italic mb-6 px-4">
+      <p className="text-gray-600 font-mono text-sm italic px-4">
         Due to volume, I may not be able to respond to all requests or offers, 
         but I will do my best to get back to you in a timely manner.
       </p>
-      
-      {/* Social links and resume */}
-      <div className="flex justify-center gap-4 flex-wrap">
-        <Button
-          className="bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white font-mono font-bold shadow-lg"
-          onClick={() => window.open(personalInfo.links.linkedin, '_blank')}
-        >
-          <LinkedInLogoIcon className="mr-2" />
-          LinkedIn
-        </Button>
-        
-        <Button
-          className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-mono font-bold shadow-lg"
-          onClick={() => window.open(personalInfo.links.github, '_blank')}
-        >
-          <GitHubLogoIcon className="mr-2" />
-          GitHub
-        </Button>
-        
-        <Button
-          className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white font-mono font-bold shadow-lg"
-          onClick={generateResumePDF}
-        >
-          <ReaderIcon className="mr-2" />
-          Resume
-        </Button>
-      </div>
     </Postcard>
   );
 }

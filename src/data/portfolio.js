@@ -1,8 +1,8 @@
 export const skillCategories = {
   "Current Stack": [
     "JavaScript", "TypeScript", "ReactJS", "NodeJS", "Fastify", "NestJS", "GraphQL", "MongoDB", 
-    "PostgreSQL", "Hasura", "NextJS", "TailwindCSS", "shadcn", "Jest", "ESLint", 
-    "Prettier", "AWS", "GCP", "Docker", "Kubernetes", "AI-assisted development"
+    "PostgreSQL", "Hasura", "NextJS", "TailwindCSS", "shadcn", "Jest", "ESLint", "Convex", "Tauri",
+    "Prettier", "AWS", "GCP", "Docker", "Kubernetes", "Prompt Engineering", "Claude"
   ],
   "Additional Expertise": [
     "Python", "ElasticSearch", "MySQL", "Redis", "Kafka", "GatsbyJS",
@@ -12,6 +12,17 @@ export const skillCategories = {
 };
 
 export const experiences = [
+  {
+    title: "Founding Engineer",
+    company: "AeonVox LLC",
+    period: "May 2025 - Current",
+    description: "Design, architect, and build software applications for the company and for select chosen clients.",
+    highlights: [
+      "Partner with clients to solve their needs in creative, cost-effective, and scalable ways.",
+      "Consult with founders to help them build their businesses and products.",
+      "Build and scale products offered by AeonVox itself"
+    ]
+  },
   {
     title: "Senior Software Engineer",
     company: "Adobe, Lehi, UT",
@@ -62,28 +73,28 @@ export const experiences = [
 
 export const projects = [
   {
+    title: "Clan Roster",
+    description: "A community of video game clans and their members, featuring robust social features and Discord integration.",
+    technologies: ["React", "Node.js", "Convex", "Tauri", "3rd Party Integrations", "Social, Chat, and Voice"],
+    link: "https://clanroster.com",
+    type: "Community Platform",
+    status: "DEPLOYED"
+  },
+  {
+    title: "Send a Dollar to Me",
+    description: "A simplistic offering - send me a dollar and get a do-follow backlink for SEO",
+    technologies: ["React", "Node.js", "Convex"],
+    link: "https://thisdomain.sucks",
+    type: "Experimental Playground",
+    status: "DEPLOYED"
+  },
+  {
     title: "AtSynct",
     description: "A comprehensive SaaS platform, providing innovative solutions for business automation and workflow management.",
     technologies: ["SaaS", "Business Automation", "Workflow Management"],
     link: "https://atsynct.com",
     type: "SaaS Platform",
     status: "DEPLOYED"
-  },
-  {
-    title: "Clan Roster",
-    description: "A community of video game clans and their members, featuring robust social features and Discord integration.",
-    technologies: ["React", "Node.js", "3rd PartyIntegrations", "Social Features"],
-    link: "https://clanroster.com",
-    type: "Community Platform",
-    status: "DEPLOYED"
-  },
-  {
-    title: "This Domain Sucks!",
-    description: "Experimental playground for various different ideas I kick around.",
-    technologies: ["React", "Node.js", "PostgreSQL", "AI Integration", "Experiemental Features"],
-    link: "https://thisdomain.sucks",
-    type: "Experimental Playground",
-    status: "ACTIVE"
   },
   {
     title: "Adobe Workfront Boards",
@@ -120,6 +131,7 @@ export const personalInfo = {
   links: {
     linkedin: "https://www.linkedin.com/in/kenneth-ahlstrom-8284511a/",
     github: "https://github.com/kahlstrom/",
+    x: "https://x.com/atsynct",
     portfolio: "https://kenahlstrom.dev"
   }
 };

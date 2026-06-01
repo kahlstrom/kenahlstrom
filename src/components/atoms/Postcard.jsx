@@ -7,6 +7,7 @@ import { motion } from 'framer-motion';
 export default function Postcard({ 
   children, 
   className = "", 
+  contentClassName = "",
   delay = 0,
   hasStamp = true,
   stampColor = "amber"
@@ -86,7 +87,7 @@ export default function Postcard({
       </div>
 
       {/* Content */}
-      <div className="relative z-10 pt-16 pb-8 md:pt-0 md:pr-24">
+      <div className={`relative z-10 pt-16 pb-8 md:pt-0 md:pr-24 ${contentClassName}`}>
         {children}
       </div>
 

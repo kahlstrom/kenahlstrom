@@ -1,10 +1,11 @@
 import Image from 'next/image';
 import { GlobeIcon } from '@radix-ui/react-icons';
 import { personalInfo } from '@/data/portfolio';
+import ProfileLinks from '@/components/molecules/ProfileLinks';
 
 export default function ProfileHeader() {
   return (
-    <div className="flex items-center gap-4 mb-8">
+    <div className="flex items-center gap-4 mb-2">
       <div className="relative">
         <div className="w-24 h-24 rounded-full border-2 border-amber-400 p-1">
           <div className="w-full h-full rounded-full overflow-hidden">
@@ -26,6 +27,7 @@ export default function ProfileHeader() {
           <GlobeIcon className="text-amber-700" />
           {personalInfo.location} | {personalInfo.status}
         </p>
+        <ProfileLinks />
       </div>
     </div>
   );
