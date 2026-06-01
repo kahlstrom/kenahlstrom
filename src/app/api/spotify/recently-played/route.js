@@ -2,7 +2,6 @@ import {
   fetchRecentlyPlayedTracks,
   getSpotifyAccessToken,
   mapRecentlyPlayedTrack,
-  normalizeSpotifyRefreshToken,
 } from '@/utils/spotify';
 
 export const revalidate = 300;
@@ -21,7 +20,7 @@ export async function GET() {
     );
   }
 
-  if (!normalizeSpotifyRefreshToken(process.env.SPOTIFY_REFRESH_TOKEN)) {
+  if (!process.env.SPOTIFY_REFRESH_TOKEN) {
     return Response.json(
       {
         error: 'Spotify is not connected yet',
