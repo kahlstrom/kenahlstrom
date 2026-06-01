@@ -1,13 +1,23 @@
 "use client";
 
+import { useState, useEffect } from 'react';
 import WorldMap from 'react-svg-worldmap';
 import { visitedCountriesData } from '@/data/visitedCountries';
 
 /**
  * BackgroundMap - Full-screen world map background
  * Optimized to be visible but not interfere with foreground content
+ *
+ * WorldMap is rendered client-only because react-svg-worldmap computes
+ * SVG dimensions from window size, which differs between SSR and hydration.
  */
 export default function BackgroundMap() {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const mapStyling = {
     // Default country style (not visited)
     countryStrokeColor: '#334155', // slate-700
@@ -23,29 +33,31 @@ export default function BackgroundMap() {
   return (
     <div className="fixed inset-0 flex items-center justify-center pointer-events-none z-0 transition-opacity duration-500">
       <div className="w-full max-w-[1400px] px-8">
-        <WorldMap
-          color={mapStyling.color}
-          value-suffix="visited"
-          size="xxl"
-          data={visitedCountriesData}
-          backgroundColor={mapStyling.backgroundColor}
-          strokeOpacity={0.4}
-          tooltipBgColor="transparent"
-          tooltipTextColor="transparent"
-          styleFunction={(context) => {
-            const { countryValue, color } = context;
-            const opacityLevel = 1.0;
-            
-            return {
-              fill: countryValue ? color : '#475569', // amber for visited, slate-600 for not visited
-              fillOpacity: opacityLevel,
-              stroke: mapStyling.countryStrokeColor,
-              strokeWidth: mapStyling.countryStrokeWidth,
-              strokeOpacity: 0.6,
-              cursor: 'default',
-            };
-          }}
-        />
+        {mounted && (
+          <WorldMap
+            color={mapStyling.color}
+            value-suffix="visited"
+            size="xxl"
+            data={visitedCountriesData}
+            backgroundColor={mapStyling.backgroundColor}
+            strokeOpacity={0.4}
+            tooltipBgColor="transparent"
+            tooltipTextColor="transparent"
+            styleFunction={(context) => {
+              const { countryValue, color } = context;
+              const opacityLevel = 1.0;
+              
+              return {
+                fill: countryValue ? color : '#475569', // amber for visited, slate-600 for not visited
+                fillOpacity: opacityLevel,
+                stroke: mapStyling.countryStrokeColor,
+                strokeWidth: mapStyling.countryStrokeWidth,
+                strokeOpacity: 0.6,
+                cursor: 'default',
+              };
+            }}
+          />
+        )}
       </div>
     </div>
   );
