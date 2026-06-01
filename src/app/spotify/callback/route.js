@@ -46,7 +46,7 @@ export async function GET(request) {
 
     return new Response(renderCallbackPage({
       title: 'Spotify connected',
-      message: 'Copy the refresh token below into your environment variables as SPOTIFY_REFRESH_TOKEN, then redeploy or restart the dev server.',
+      message: 'Add the token value below to your environment as SPOTIFY_REFRESH_TOKEN. Copy only the token itself — do not include the variable name. Reconnect any time playback scopes change.',
       refreshToken: tokens.refreshToken,
     }), {
       headers: { 'Content-Type': 'text/html; charset=utf-8' },
@@ -135,7 +135,7 @@ function renderCallbackPage({
     <main>
       <h1>${title}</h1>
       <p>${message}</p>
-      ${refreshToken ? `<pre id="refresh-token">SPOTIFY_REFRESH_TOKEN=${refreshToken}</pre>` : ''}
+      ${refreshToken ? `<p>Set this in Vercel/local env:</p><p><code>SPOTIFY_REFRESH_TOKEN</code></p><p><strong>Copy this value only:</strong></p><pre id="refresh-token">${refreshToken}</pre>` : ''}
       ${showRetry ? '<p><a href="/api/spotify/auth">Try connecting again</a></p>' : ''}
       <p><a href="/">Back to portfolio</a></p>
     </main>

@@ -2,6 +2,7 @@ import {
   fetchRecentlyPlayedTracks,
   getSpotifyAccessToken,
   mapRecentlyPlayedTrack,
+  normalizeSpotifyRefreshToken,
 } from '@/utils/spotify';
 
 export const revalidate = 300;
@@ -20,7 +21,7 @@ export async function GET() {
     );
   }
 
-  if (!process.env.SPOTIFY_REFRESH_TOKEN) {
+  if (!normalizeSpotifyRefreshToken(process.env.SPOTIFY_REFRESH_TOKEN)) {
     return Response.json(
       {
         error: 'Spotify is not connected yet',
@@ -46,10 +47,32 @@ export async function GET() {
     const items = await fetchRecentlyPlayedTracks(accessToken, 10);
 
     return Response.json({
-      tracks: items.map(mapRecentlyPlayedTrack),
+      tracks: items.map(mapRecentlyPlayedTrack).filter(Boolean),
     });
   } catch (error) {
-    console.error('Spotify API error:', error);
+    console.error('Spotify API error:', error.details ?? error.message);
+
+    if (error.code === 'SPOTIFY_TOKEN_REFRESH_FAILED') {
+      return Response.json(
+        {
+          error:
+            'Spotify token refresh failed. Use SPOTIFY_REFRESH_TOKEN (not the access token) from /spotify/callback and reconnect if needed.',
+          needsAuth: true,
+        },
+        { status: 401 }
+      );
+    }
+
+    if (error.code === 'SPOTIFY_RECENTLY_PLAYED_FAILED') {
+      return Response.json(
+        {
+          error: 'Spotify rejected the recently played request. Try reconnecting your account.',
+          needsAuth: error.status === 401 || error.status === 403,
+        },
+        { status: 502 }
+      );
+    }
+
     return Response.json(
       { error: 'Failed to fetch Spotify activity' },
       { status: 500 }

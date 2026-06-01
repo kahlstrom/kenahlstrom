@@ -1,20 +1,28 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { ExternalLinkIcon } from '@radix-ui/react-icons';
 import { formatPlayedAt } from '@/utils/spotify';
+import { useSpotifyPlayer } from '@/hooks/useSpotifyPlayer';
 
 /**
- * SpotifyActivity - Displays recently played tracks with preview playback controls.
+ * SpotifyActivity - Recently played tracks with Web Playback SDK controls.
  */
 export default function SpotifyActivity() {
   const [tracks, setTracks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [needsAuth, setNeedsAuth] = useState(false);
-  const [playingTrackId, setPlayingTrackId] = useState(null);
-  const audioRef = useRef(null);
+  const [playbackError, setPlaybackError] = useState(null);
+  const {
+    isReady,
+    isInitializing,
+    error: playerError,
+    playingTrackId,
+    playTrack,
+    stopPlayback,
+  } = useSpotifyPlayer();
 
   useEffect(() => {
     const fetchSpotifyActivity = async () => {
@@ -40,54 +48,33 @@ export default function SpotifyActivity() {
     fetchSpotifyActivity();
   }, []);
 
-  useEffect(() => {
-    const audio = audioRef.current;
-
-    return () => {
-      audio?.pause();
-    };
-  }, []);
-
   /**
-   * Plays a track preview using the HTML5 Audio API.
+   * Starts full-track playback via the Web Playback SDK.
    * @param {object} track
    */
   const handlePlay = async (track) => {
-    if (!track.previewUrl) {
-      return;
-    }
-
-    if (!audioRef.current) {
-      audioRef.current = new Audio();
-    }
-
-    const audio = audioRef.current;
-
-    audio.pause();
-    audio.src = track.previewUrl;
-    audio.onended = () => setPlayingTrackId(null);
+    setPlaybackError(null);
 
     try {
-      await audio.play();
-      setPlayingTrackId(track.id);
+      await playTrack(track.uri, track.id);
     } catch (err) {
-      console.error('Error playing track preview:', err);
-      setPlayingTrackId(null);
+      console.error('Error playing track:', err);
+      setPlaybackError(err.message || 'Failed to start playback');
     }
   };
 
   /**
-   * Stops the currently playing preview.
+   * Stops the current Web Playback SDK session.
    */
-  const handleStop = () => {
-    const audio = audioRef.current;
-    audio?.pause();
+  const handleStop = async () => {
+    setPlaybackError(null);
 
-    if (audio) {
-      audio.currentTime = 0;
+    try {
+      await stopPlayback();
+    } catch (err) {
+      console.error('Error stopping playback:', err);
+      setPlaybackError(err.message || 'Failed to stop playback');
     }
-
-    setPlayingTrackId(null);
   };
 
   if (loading) {
@@ -139,10 +126,30 @@ export default function SpotifyActivity() {
         <span className="text-xs font-mono text-green-700">Last 10 tracks</span>
       </div>
 
+      {isInitializing && (
+        <p className="text-xs font-mono text-gray-600 mb-3">
+          Initializing Spotify player...
+        </p>
+      )}
+
+      {playerError && (
+        <p className="text-xs font-mono text-red-700 mb-3">
+          {playerError}
+          {' '}
+          <a href="/api/spotify/auth" className="underline">
+            Reconnect Spotify
+          </a>
+          {' '}if you recently updated playback permissions.
+        </p>
+      )}
+
+      {playbackError && (
+        <p className="text-xs font-mono text-red-700 mb-3">{playbackError}</p>
+      )}
+
       <div className="space-y-3">
         {tracks.map((track, index) => {
           const isPlaying = playingTrackId === track.id;
-          const canPreview = Boolean(track.previewUrl);
 
           return (
             <motion.div
@@ -196,29 +203,22 @@ export default function SpotifyActivity() {
                     </p>
 
                     <div className="flex items-center gap-2">
-                      {canPreview ? (
-                        <>
-                          <button
-                            type="button"
-                            onClick={() => handlePlay(track)}
-                            className="px-2 py-1 text-xs font-mono rounded border border-green-800/30 text-green-900 hover:bg-green-200 transition-colors"
-                          >
-                            Play
-                          </button>
-                          {isPlaying && (
-                            <button
-                              type="button"
-                              onClick={handleStop}
-                              className="px-2 py-1 text-xs font-mono rounded border border-green-800/30 text-green-900 hover:bg-green-200 transition-colors"
-                            >
-                              Stop
-                            </button>
-                          )}
-                        </>
-                      ) : (
-                        <span className="text-[10px] font-mono text-gray-500 italic">
-                          No preview
-                        </span>
+                      <button
+                        type="button"
+                        onClick={() => handlePlay(track)}
+                        disabled={!isReady}
+                        className="px-2 py-1 text-xs font-mono rounded border border-green-800/30 text-green-900 hover:bg-green-200 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                      >
+                        Play
+                      </button>
+                      {isPlaying && (
+                        <button
+                          type="button"
+                          onClick={handleStop}
+                          className="px-2 py-1 text-xs font-mono rounded border border-green-800/30 text-green-900 hover:bg-green-200 transition-colors"
+                        >
+                          Stop
+                        </button>
                       )}
                     </div>
                   </div>
@@ -230,7 +230,7 @@ export default function SpotifyActivity() {
       </div>
 
       <p className="text-xs font-mono text-gray-600 mt-3 italic">
-        Recently played on Spotify · previews are ~30 seconds
+        Recently played on Spotify · playback uses the Web Playback SDK
       </p>
     </div>
   );

@@ -3,7 +3,14 @@ const SPOTIFY_AUTHORIZE_URL = 'https://accounts.spotify.com/authorize';
 const SPOTIFY_RECENTLY_PLAYED_URL =
   'https://api.spotify.com/v1/me/player/recently-played';
 
-export const SPOTIFY_SCOPES = ['user-read-recently-played'];
+export const SPOTIFY_SCOPES = [
+  'user-read-recently-played',
+  'streaming',
+  'user-read-email',
+  'user-read-private',
+  'user-modify-playback-state',
+  'user-read-playback-state',
+];
 
 /**
  * Resolves the Spotify OAuth redirect URI from env or the incoming request.
@@ -120,7 +127,12 @@ export async function getSpotifyAccessToken() {
   });
 
   if (!response.ok) {
-    throw new Error('Failed to refresh Spotify access token');
+    const errorBody = await response.text();
+    const error = new Error('Failed to refresh Spotify access token');
+    error.code = 'SPOTIFY_TOKEN_REFRESH_FAILED';
+    error.status = response.status;
+    error.details = errorBody;
+    throw error;
   }
 
   const data = await response.json();
@@ -145,7 +157,12 @@ export async function fetchRecentlyPlayedTracks(accessToken, limit = 10) {
   });
 
   if (!response.ok) {
-    throw new Error('Failed to fetch recently played tracks from Spotify');
+    const errorBody = await response.text();
+    const error = new Error('Failed to fetch recently played tracks from Spotify');
+    error.code = 'SPOTIFY_RECENTLY_PLAYED_FAILED';
+    error.status = response.status;
+    error.details = errorBody;
+    throw error;
   }
 
   const data = await response.json();
@@ -188,6 +205,11 @@ export function formatPlayedAt(isoString) {
  */
 export function mapRecentlyPlayedTrack(item) {
   const track = item.track;
+
+  if (!track) {
+    return null;
+  }
+
   const artistNames = track.artists?.map((artist) => artist.name).join(', ') ?? '';
   const albumImage = track.album?.images?.[2]?.url
     ?? track.album?.images?.[0]?.url
@@ -195,11 +217,11 @@ export function mapRecentlyPlayedTrack(item) {
 
   return {
     id: track.id,
+    uri: track.uri,
     name: track.name,
     artists: artistNames,
     album: track.album?.name ?? '',
     playedAt: item.played_at,
-    previewUrl: track.preview_url ?? null,
     spotifyUrl: track.external_urls?.spotify ?? null,
     albumImageUrl: albumImage,
   };
