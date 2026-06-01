@@ -5,7 +5,7 @@ import OverviewSection from '@/components/organisms/sections/OverviewSection';
 import ProjectsSection from '@/components/organisms/sections/ProjectsSection';
 import SkillsSection from '@/components/organisms/sections/SkillsSection';
 import ExperienceSection from '@/components/organisms/sections/ExperienceSection';
-import ContactSection from '@/components/organisms/sections/ContactSection';
+import PersonalSection from '@/components/organisms/sections/PersonalSection';
 
 const sectionContent = {
   mission: {
@@ -24,9 +24,9 @@ const sectionContent = {
     title: "EXPERIENCE",
     component: ExperienceSection
   },
-  contact: {
-    title: "GET IN TOUCH",
-    component: ContactSection
+  personal: {
+    title: "PERSONAL",
+    component: PersonalSection
   }
 };
 
